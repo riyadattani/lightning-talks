@@ -71,9 +71,9 @@ package blog_test
 func TestBlog_NewPost(t *testing.T) {
 	t.Run("should create a blog post", func(t *testing.T) {
 		expectedTitle := "Apply BDD to Go Packages"
-		rawBlog := NewBlogPostBuider().WithTitle(expectedTitle).Build()
+		rawPost := NewBlogPostBuider().WithTitle(expectedTitle).Build()
 
-		post := blog.NewPost(rawBlog)
+		post := blog.NewPost(rawPost)
 
 		if post.Title != expectedTitle {
 			t.Errorf("expected %s, got %s", post.Title, expectedTitle)
