@@ -1,8 +1,102 @@
-# Apply BDD to Go Packages 
+# Apply BDD to Go Packages
 
-Riya Dattani
-16 Sep 2021
+Riya Dattani 16 Sep 2021
 www.riyadattani.com
 @DattaniRiya
 
-## Time to write the best talk evaaa
+## The purpose of a developers life
+
+- We want to make our users happy (or make money)
+- Code is only a means to achieve this
+
+## What we want to do and where to begin
+
+- Too often we dive straight into the code before understanding _what_ we are trying to build
+- We make **assumptions** to get started because you cannot codify ambiguous specifications
+
+## What do we do
+
+[insert some funny pic here]
+
+## We need a process
+
+- Behavior Driven Development (BDD) gives us a method for **focus** and a way to reduce waste
+- We need to specify the _behaviour_ and express it in code
+
+## How to BDD
+
+- To define the behaviour we should put ourselves into the shoes of the external user
+- A specification explains that describes the behaviour will tell you:
+-
+
+1. How I interact with it
+2. What the outcome is
+
+## Applying BDD to Go packages
+
+- The developer is the "external user" in this case
+- As a developer, I want to understand the how to use the package and what are the outcomes of the package
+- The specification expressed in the test should tell me why I should use the package and what it's purpose is
+- In Go, you can add `_test` to the end of the package name in the testing file and this ensures that you can only talk
+  to the package using its public api
+
+## Bad example
+
+```go
+package blog_test
+
+func TestBlog(t *testing.T) {
+	t.Run("create a blog post from a string", func(t *testing.T) {
+		blogData := `title: Apply BDD to Go Packages 
+date: 2021-Sep-16
+tags: golang,testing
+-----
+This is the first sentence of the content.`
+		markdownBlogPost := blog.transformStringToMarkdown(blogData)
+		blogPost := blog.NewBlogPost(markdownBlogPost)
+
+		expectedTitle := "Apply BDD to Go Packages"
+		if blogPost.Title != expectedTitle {
+			t.Errorf("expected %s, got %s", blogPost.Title, expectedTitle)
+		}
+	})
+}
+```
+
+## Good example
+
+```go
+package blog_test
+
+func TestBlog_NewPost(t *testing.T) {
+	t.Run("should create a blog post", func(t *testing.T) {
+		expectedTitle := "Apply BDD to Go Packages"
+		rawBlog := NewBlogPostBuider().WithTitle(expectedTitle).Build()
+
+		post := blog.NewPost(rawBlog)
+
+		if post.Title != expectedTitle {
+			t.Errorf("expected %s, got %s", post.Title, expectedTitle)
+		}
+	})
+}
+```
+
+## Benefits
+
+- Encapsulation
+- Better package design
+- Better developer experience
+- Easier interaction between this package and other packages
+
+## Summary
+
+- Go test packages allow us to specify the behaviour of the package as an external user of that package.
+- The external package technique forces you to write specifications to reflect how a developer can use the package and
+  how to interact with it.
+
+## Quiz
+
+- What is one benefit of using go test packages?
+
+## Questions 
