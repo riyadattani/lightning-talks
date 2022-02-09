@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func AgeServer(w http.ResponseWriter, r *http.Request) {
+func AgeHandler(w http.ResponseWriter, r *http.Request) {
 	name := strings.TrimPrefix(r.URL.Path, "/")
 	_, _ = fmt.Fprint(w, GetAge(name))
 }

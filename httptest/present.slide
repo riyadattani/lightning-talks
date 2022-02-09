@@ -5,33 +5,27 @@ www.riyadattani.com
 @DattaniRiya
 
 
-## What are we going to talk about:
+## Summary:
 
 1. Testing Go http server handlers
 2. Testing Go http clients
 
-: Notes:
-: - Built-in package in the standard lib to mock
-:    - http servers
-:    - response writers that we pass to server handlers
-: - Very straight forward to test http servers and clients
-
 
 ## Testing Go handlers
 
-## What is a handler?
+What is a handler?
 
 Interface:
 
-````
+```go
     type Handler interface {
         ServeHTTP(ResponseWriter, *Request)
     }
-````
+```
 
-: Notes:
-: - A handler responds to a HTTP request
-: - ServeHTTP should write reply headers and data to the ResponseWriter and then return
+Example:
+
+.code main.go
 
 ## What is a HandlerFunc?
 
@@ -53,63 +47,21 @@ handler := http.HandlerFunc(Sup)
 
 ```
 
-Notes:
-- The HandlerFunc type is an adapter to allow the use of ordinary functions as HTTP handlers because it implements the handler interface
-- Therefore, when we create a function, like the Sup function, which has the appropriate signature of the HandlerFunc type and we cast it to the http.HandlerFunc type, then it is a handler that calls the function Sup.
-
 ## Example!
-
-go to example_one
-
-Notes:
-- to test our handler, we need to pass in a http ResponseWriter and a http Request
-- the http test package conveniently provides us with these
-- we can us httptest.NewRequest which will return a new incoming server Request and can be passed in to the handler without worrying about the error
-- a http.ResponseWriter that can be created by using httptest.NewRecorder type which returns a httptest.ResponseRecorder. The ResponseRecorder is an implementation of http.ResponseWriter that records all the data that the handler will write to the response and return the data written afterwards. We can asset on this to check if we got the response we expected.
-
-## httptest.NewRequest and httptest.NewRecorder
-
-1. httptest.NewRequest: returns a new incoming server Request and can be passed in to handler
-2. http.ResponseWriter that can be created by using httptest.NewRecorder type which returns a httptest.ResponseRecorder
-
-
-
 
 ## Testing Go http clients
 
-## What are we trying to do
-
-- Earlier we were trying to test the behaviour of a specific handler
-- But say we want to test if we can view the age of the person when we hit our endpoint
-- We can use httptest.NewServer to mock out our server and test that behaviour
-
-```
-func NewServer(handler http.Handler) *Server
-```
-
 ## Example!
 
-go to example_one test 2
+## Summary
 
-Notes:
-- We can mock out our server using httptest.NewServer.
-- this function takes a handler as an argument. Here we can pass in our AgeServer handler.
-- This returns a pointer to a Server and the most important thing we need from it is the URL
-- We can make a GET request pointing towards the url provided by the test server along with any other path parameters and inspect on the response we get back
+- You can test specific handlers using **httptest.NewRequest** and **httptest.NewRecorder** and the request and response writer
+- You can mock out a server using **httptest.NewServer**
+- httptest package is convenient and easy to use and when looking at enhanced external packages that test handlers/clients its worth looking at packages that are built on the standard http package e.g. Gorilla or Chi
 
-## One step further
+## Stretching quiz
 
-I got fed up of hardcoding names and ages. I decided to use an external api to get me the age of a given person e.g. Agify.
-
-## Example!
-
-go to example_two
-
-Notes:
-- In this scenario, I want to mock out the external api which returns some canned data.
-- Again we can use httptest.NewServer to mock the api and point our agifyServer to use the URL we get back from the mocked api
-- One thing we should look out for is that if the API changes, this test will still work because you are fully mocking out the API. Here an integration test and/or a cdc would be useful
-
-## Quiz
+1. Why is Request a pointer but ResponseWriter is not
+2. What is the difference between middleware and handler?
 
 ## Questions

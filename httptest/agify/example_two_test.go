@@ -29,9 +29,9 @@ func TestAgify_GetAge(t *testing.T) {
 		}))
 		defer ts.Close()
 
-		agifyServer := agify.NewAgify(ts.URL)
+		agifyClient := agify.NewAgify(ts.URL)
 
-		gotAge, err := agifyServer.GetAge(name)
+		gotAge, err := agifyClient.GetAge(name)
 		is.NoErr(err)
 
 		is.Equal(gotAge, expectedAge)

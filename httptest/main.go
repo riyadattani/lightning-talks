@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	handler := http.HandlerFunc(age.AgeServer)
+	handler := http.HandlerFunc(age.AgeHandler)
 	log.Fatal(http.ListenAndServe(":1000", handler))
 }
